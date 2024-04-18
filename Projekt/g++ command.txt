@@ -1,1 +1,1 @@
-g++ -o main main.cpp road.cpp road.h -lglfw -L/usr/lib64 -lGLEW -lGL -lX11 -lGLU
+g++ -o main main.cpp car.cpp car.h road.cpp road.h -lglfw -L/usr/lib64 -lGLEW -lGL -lX11 -lGLU

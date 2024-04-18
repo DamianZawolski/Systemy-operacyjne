@@ -4,6 +4,7 @@ using namespace std;
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include "road.h"
+#include "car.h"
 
 int main() {
     // Initialize GLFW
@@ -13,7 +14,7 @@ int main() {
     }
 
     // Create a windowed mode window and its OpenGL context
-    GLFWwindow* window = glfwCreateWindow(640, 480, "Hello World", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(640, 480, "Hello World", nullptr, nullptr);
     if (!window) {
         cerr << "Failed to create window!" << endl;
         glfwTerminate();
@@ -32,7 +33,9 @@ int main() {
     // Loop until the user closes the window
     while (!glfwWindowShouldClose(window)) {
         // Render here
+        glClear(GL_COLOR_BUFFER_BIT);
         draw_all_roads();
+        start_car_thread();
 
 
         // Swap front and back buffers
