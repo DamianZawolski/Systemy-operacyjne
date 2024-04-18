@@ -6,7 +6,7 @@ using namespace std;
 #include "road.h"
 #include "car.h"
 #include <ctime>
-
+#include <thread>
 
 int main() {
     // Initialize GLFW
@@ -16,7 +16,7 @@ int main() {
     }
 
     // Create a windowed mode window and its OpenGL context
-    GLFWwindow* window = glfwCreateWindow(640, 480, "Damian Zawolski 260353", nullptr, nullptr);
+    GLFWwindow* window = glfwCreateWindow(1280, 720, "Damian Zawolski 260353", nullptr, nullptr);
     if (!window) {
         cerr << "Failed to create window!" << endl;
         glfwTerminate();
@@ -33,7 +33,7 @@ int main() {
     }
 
     srand((unsigned) time(nullptr));
-    draw_all_roads();
+
     car car1_track2 = car(2, "car 1 on track 2", "red");
     car car2_track2 = car(2, "car 2 on track 2", "green");
     car car3_track2 = car(2, "car 3 on track 2", "yellow");
@@ -42,8 +42,9 @@ int main() {
     car2_track2.set_speed(0.01);
     car3_track2.set_speed(0.01);
 
-    car all_cars_track2[3] = {car1_track2, car2_track2, car3_track2};
-
+    thread thread_c1_t2(&car::simulate_car, &car1_track2);
+    thread thread_c2_t2(&car::simulate_car, &car2_track2);
+    thread thread_c3_t2(&car::simulate_car, &car3_track2);
 
     car car1_track1 = car(1, "car 1 on track 1", "blue");
     car car2_track1 = car(1, "car 2 on track 1", "magenta");
@@ -55,43 +56,68 @@ int main() {
     car car8_track1 = car(1, "car 8 on track 1", "black");
     car car9_track1 = car(1, "car 9 on track 1", "grey");
 
-    car all_cars_track1[9] = {car1_track1, car2_track1, car3_track1, car4_track1, car5_track1, car6_track1, car7_track1, car8_track1, car9_track1};
+    thread thread_c1_t1(&car::simulate_car, &car1_track1);
+    thread thread_c2_t1(&car::simulate_car, &car2_track1);
+    thread thread_c3_t1(&car::simulate_car, &car3_track1);
+    thread thread_c4_t1(&car::simulate_car, &car4_track1);
+    thread thread_c5_t1(&car::simulate_car, &car5_track1);
+    thread thread_c6_t1(&car::simulate_car, &car6_track1);
+    thread thread_c7_t1(&car::simulate_car, &car7_track1);
+    thread thread_c8_t1(&car::simulate_car, &car8_track1);
+    thread thread_c9_t1(&car::simulate_car, &car9_track1);
 
     // Loop until the user closes the window
     while (!glfwWindowShouldClose(window)) {
         //clear content of window
         glClear(GL_COLOR_BUFFER_BIT);
-        // Render here
+        // Render of roads and cars
         draw_all_roads();
+        car1_track2.draw();
+        car2_track2.draw();
+        car3_track2.draw();
 
-        for (auto & car : all_cars_track2){
-            car.move();
-            car.draw();
+        car1_track1.draw();
+        car2_track1.draw();
+        car3_track1.draw();
+        car4_track1.draw();
+        car5_track1.draw();
+        car6_track1.draw();
+        car7_track1.draw();
+        car8_track1.draw();
+        car9_track1.draw();
+
+        // Swap front and back buffers
+        glfwSwapBuffers(window);
+
+        // Poll for and process events
+        glfwPollEvents();
+
+        // wait for 0.01 second
+        glfwWaitEventsTimeout(0.01);
+
+        //exit if space is pressed
+        if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) {
+            //track 2 cars threads are finished immediately, for rest we have to wait
+            car1_track2.finished= true;
+            car2_track2.finished= true;
+            car3_track2.finished= true;
+
+            thread_c1_t2.join();
+            thread_c2_t2.join();
+            thread_c3_t2.join();
+            thread_c1_t1.join();
+            thread_c2_t1.join();
+            thread_c3_t1.join();
+            thread_c4_t1.join();
+            thread_c5_t1.join();
+            thread_c6_t1.join();
+            thread_c7_t1.join();
+            thread_c8_t1.join();
+            thread_c9_t1.join();
+            break;
         }
-
-        for (auto & car : all_cars_track1){
-            car.move();
-            car.draw();
-            }
-
-
-            // Swap front and back buffers
-            glfwSwapBuffers(window);
-
-            // Poll for and process events
-            glfwPollEvents();
-
-            // wait for 1 second
-            glfwWaitEventsTimeout(0.01);
-
-            //exit if space is pressed
-            if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) {
-                break;
-            }
-        }
-
-        // Terminate GLFW
-        glfwTerminate();
-
-        return 0;
     }
+    // Terminate GLFW
+    glfwTerminate();
+    return 0;
+}

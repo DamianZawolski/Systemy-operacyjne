@@ -1,4 +1,3 @@
-
 #ifndef SYSTEMY_OPERACYJNE_CAR_H
 #define SYSTEMY_OPERACYJNE_CAR_H
 
@@ -15,13 +14,11 @@ public:
     void move();
     void set_speed(float desired_speed);
     void rotate_right();
-    void* move_thread();
+    void simulate_car();
     void write_info(string text);
-    float x, y, width, height, r, g, b, speed;
+    float x, y, width, height, r, g, b, speed, new_x, new_y;
     int track, laps;
-    //direction of car
     string direction, name, color;
     bool finished;
-    pthread_t thread;
 };
 

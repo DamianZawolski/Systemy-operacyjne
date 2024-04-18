@@ -1,5 +1,3 @@
-
-
 #include "road.h"
 #include <GL/glew.h>
 
@@ -13,6 +11,7 @@ void draw_all_roads(){
     glClear(GL_COLOR_BUFFER_BIT);
     glBegin(GL_QUADS);
     glColor3f(0.1f, 0.1f, 0.1);
+
     float corner1_x = -0.7f;
     float corner1_y = 0.2f;
     float corner2_x = 0.7f;

@@ -1,10 +1,10 @@
 using namespace std;
 #include "car.h"
 #include <GL/glew.h>
-#include <unistd.h>
 #include <string>
 #include "iostream"
-
+#include <chrono>
+#include "thread"
 
 car::car(int track, string name, string color) {
     this->track = track;
@@ -12,29 +12,29 @@ car::car(int track, string name, string color) {
     this-> finished = false;
     if (track ==1){
         this->x = (rand() % 100 -110)/10;
-        this->y = 0.2;
+        this->y = 0.25;
         this->direction = "right";
     }
     else{
         int rand_wall = (rand() % 4);
         if (rand_wall == 0){
-            this->x = 0.2;
+            this->x = 0.25;
             this->y = (rand() % 13 -6)/10;
             this->direction = "right";
         }
         else if (rand_wall == 1){
-            this->x = -0.2;
+            this->x = -0.25;
             this->y = (rand() % 13 -6)/10;
             this->direction = "left";
         }
         else if (rand_wall == 2){
             this->x = (rand() % 5 -2)/10;
-            this->y = 0.6;
+            this->y = 0.65;
             this->direction = "right";
         }
         else{
             this->x = (rand() % 5 -2)/10;
-            this->y = -0.6;
+            this->y = -0.65;
             this->direction = "left";
         }
     }
@@ -56,20 +56,18 @@ car::car(int track, string name, string color) {
     else if (color=="magenta"){this->r = 1; this->g = 0; this->b = 1; this->color = color;}
     else if (color=="white"){this->r = 1; this->g = 1; this->b = 1; this->color = color;}
     else if (color=="grey"){this->r = 0.5; this->g = 0.5; this->b = 0.5; this->color = color;}
-
     else{this->r = 0; this->g = 0; this->b = 0; this->color = color;}
 
     this-> laps = 0;
 }
 
-//draw car
 void car::draw() {
     glBegin(GL_QUADS);
     glColor3f(r, g, b);
-    glVertex2f(x, y);
-    glVertex2f(x + width, y);
-    glVertex2f(x + width, y + height);
-    glVertex2f(x, y + height);
+    glVertex2f(x - width / 2, y - height / 2);
+    glVertex2f(x + width / 2, y - height / 2);
+    glVertex2f(x + width / 2, y + height / 2);
+    glVertex2f(x - width / 2, y + height / 2);
     glEnd();
 }
 
@@ -89,8 +87,8 @@ void car::rotate_right() {
     }
     else if (direction == "up") {
         direction = "right";
-    }
-}
+    }}
+
 void car::write_info(string text){
     string text_to_write = name + text;
     if (color=="red") cout<<"\033[31m"<<text_to_write<<"\033[0m"<<endl;
@@ -106,87 +104,66 @@ void car::write_info(string text){
     else cout<<color<<name<<text<<"\033[0m"<<endl;
 
 }
-//move car
-void car::move() {
-    if (track ==2){
-        if (x>= 0.25 and direction == "right") {
-            rotate_right();
-        }
-        else if (x <= -0.25 and direction == "left") {
-            rotate_right();
-        }
-        else if (y >= 0.65 and direction == "up") {
-            rotate_right();
-            laps++;
-            string text = " finished lap " + to_string(laps);
-            write_info(text);
-        }
-        else if (y <= -0.65 and direction == "down") {
-            rotate_right();
-        }
 
-        if (direction == "right") {
-            x += speed;
-        }
-        else if (direction == "down") {
-            y -= speed;
-        }
-        else if (direction == "left") {
-            x -= speed;
-        }
-        else if (direction == "up") {
-            y += speed;
-        }
-    }
-    else if (track == 1){
-        if (not finished){
-            if (x>= 0.65 and direction == "right") {
+void car::move() {
+        if (track == 2) {
+            if (x >= 0.25 and direction == "right") {
                 rotate_right();
-            }
-            else if (x <= -0.65 and direction == "left" and laps<2) {
+            } else if (x <= -0.25 and direction == "left") {
                 rotate_right();
-            }
-            else if (y >= 0.25 and direction == "up") {
+            } else if (y >= 0.65 and direction == "up") {
                 rotate_right();
                 laps++;
                 string text = " finished lap " + to_string(laps);
                 write_info(text);
-            }
-            else if (y <= -0.25 and direction == "down") {
+            } else if (y <= -0.65 and direction == "down") {
                 rotate_right();
             }
 
             if (direction == "right") {
                 x += speed;
-            }
-            else if (direction == "down") {
+            } else if (direction == "down") {
                 y -= speed;
-            }
-            else if (direction == "left") {
+            } else if (direction == "left") {
                 x -= speed;
-                if (x <=-2){
-                    write_info(" finished race");
-                    finished = true;
-                }
-            }
-            else if (direction == "up") {
+            } else if (direction == "up") {
                 y += speed;
             }
-        }
-    }
+        } else if (track == 1) {
+                if (x >= 0.65 and direction == "right") {
+                    rotate_right();
+                } else if (x <= -0.65 and direction == "left" and laps < 2) {
+                    rotate_right();
+                } else if (y >= 0.25 and direction == "up") {
+                    rotate_right();
+                    laps++;
+                    string text = " finished lap " + to_string(laps);
+                    write_info(text);
+                } else if (y <= -0.25 and direction == "down") {
+                    rotate_right();
+                }
 
-}
+                if (direction == "right") {
+                    x += speed;
+                } else if (direction == "down") {
+                    y -= speed;
+                } else if (direction == "left") {
+                    x -= speed;
+                    if (x <= -2) {
+                        write_info(" finished race");
+                        finished = true;
+                    }
+                } else if (direction == "up") {
+                    y += speed;
+            }}}
 
 void car::set_speed(float desired_speed){
     this->speed = desired_speed;
 }
-//move car in thread
-void* car::move_thread() {
-    while (true) {
+
+void car::simulate_car() {
+    while (not finished) {
         move();
-        draw();
-        usleep(20000);
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
     }
 }
-
-
