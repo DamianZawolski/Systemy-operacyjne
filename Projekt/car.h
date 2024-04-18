@@ -5,15 +5,22 @@
 #endif //SYSTEMY_OPERACYJNE_CAR_H
 
 #include <pthread.h>
+#include <string>
 
 
-void draw_car(float corner1_x, float corner1_y, float corner2_x, float corner2_y);
 
-void draw_all_cars(float i);
-
-void* car_thread(void* arg);
-
-void start_car_thread();
-
-
+class car {
+public:
+    car(int track);
+    void draw();
+    void move();
+    void set_speed(float desired_speed);
+    void rotate_right();
+    void* move_thread();
+    float x, y, width, height, r, g, b, speed;
+    int track, laps;
+    //direction of car
+    std::string direction;
+    pthread_t thread;
+};
 

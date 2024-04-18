@@ -33,6 +33,7 @@ void draw_all_roads(){
     corner2_x = 0.6f;
     draw_road(corner1_x, corner1_y, corner2_x, corner2_y);
 
+    glColor3f(0.05f, 0.05f, 0.05);
     corner1_x = -0.2f;
     corner1_y = -0.7f;
     corner2_x = 0.2f;
