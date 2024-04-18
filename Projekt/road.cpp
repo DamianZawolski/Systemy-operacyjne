@@ -1,6 +1,4 @@
-//
-// Created by damian-zawolski on 18.04.24.
-//
+
 
 #include "road.h"
 #include <GL/glew.h>

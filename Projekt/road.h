@@ -1,6 +1,3 @@
-//
-// Created by damian-zawolski on 18.04.24.
-//
 
 #ifndef SYSTEMY_OPERACYJNE_ROAD_H
 #define SYSTEMY_OPERACYJNE_ROAD_H
