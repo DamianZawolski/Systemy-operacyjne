@@ -1,0 +1,3 @@
+/home/damian-zawolski/CLionProjects/Systemy-operacyjne/cmake-build-debug/CMakeFiles/Systemy_operacyjne.dir
+/home/damian-zawolski/CLionProjects/Systemy-operacyjne/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/damian-zawolski/CLionProjects/Systemy-operacyjne/cmake-build-debug/CMakeFiles/rebuild_cache.dir
