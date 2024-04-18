@@ -1,21 +1,17 @@
-
+using namespace std;
 #include "car.h"
 #include <GL/glew.h>
-#include <pthread.h>
 #include <unistd.h>
-#include <cstdlib>
 #include <string>
-#include <time.h>
+#include "iostream"
 
 
-
-//create object car with 4 corners and color
-
-
-car::car(int track) {
+car::car(int track, string name, string color) {
     this->track = track;
+    this->name = name;
+    this-> finished = false;
     if (track ==1){
-        this->x = -1.6;
+        this->x = (rand() % 100 -110)/10;
         this->y = 0.2;
         this->direction = "right";
     }
@@ -52,26 +48,16 @@ car::car(int track) {
     float speed_value = (rand() % 16 + 5) / 1000.0;
     this->speed = speed_value;
 
-    //r,g,b - color of car-random between 0,3 and 1
-    float r_value = (rand() % 100) / 100.0;
-    float g_value = (rand() % 100) / 100.0;
-    float b_value = (rand() % 100) / 100.0;
-    if (r_value < 0.3) r_value = 0.3;
-    if (g_value < 0.3) g_value = 0.3;
-    if (b_value < 0.3) b_value = 0.3;
+    if (color=="red"){this->r = 1; this->g = 0; this->b = 0; this->speed = 0.03; this->color = color;}
+    else if (color=="green"){this->r = 0; this->g = 1; this->b = 0; this->color = color;}
+    else if (color=="blue"){this->r = 0; this->g = 0; this->b = 1; this->color = color;}
+    else if (color=="yellow"){this->r = 1; this->g = 1; this->b = 0; this->color = color;}
+    else if (color=="cyan"){this->r = 0; this->g = 1; this->b = 1; this->color = color;}
+    else if (color=="magenta"){this->r = 1; this->g = 0; this->b = 1; this->color = color;}
+    else if (color=="white"){this->r = 1; this->g = 1; this->b = 1; this->color = color;}
+    else if (color=="grey"){this->r = 0.5; this->g = 0.5; this->b = 0.5; this->color = color;}
 
-    this->r = r_value;
-    this->g = g_value;
-    this->b = b_value;
-
-    //10% chance for car to be a red ferrari, which overtakes other cars
-    int rand_red = (rand() % 100);
-    if (rand_red <= 10){
-        this->r = 1;
-        this->g = 0;
-        this->b = 0;
-        this->speed = 0.03;
-    }
+    else{this->r = 0; this->g = 0; this->b = 0; this->color = color;}
 
     this-> laps = 0;
 }
@@ -105,7 +91,21 @@ void car::rotate_right() {
         direction = "right";
     }
 }
+void car::write_info(string text){
+    string text_to_write = name + text;
+    if (color=="red") cout<<"\033[31m"<<text_to_write<<"\033[0m"<<endl;
+    else if (color=="green") cout<<"\033[32m"<<name<<text<<"\033[0m"<<endl;
+    else if (color=="blue") cout<<"\033[34m"<<name<<text<<"\033[0m"<<endl;
+    else if (color=="yellow") cout<<"\033[33m"<<name<<text<<"\033[0m"<<endl;
+    else if (color=="cyan") cout<<"\033[36m"<<name<<text<<"\033[0m"<<endl;
+    else if (color=="magenta") cout<<"\033[35m"<<name<<text<<"\033[0m"<<endl;
+    else if (color=="grey") cout<<"\033[37m"<<name<<text<<"\033[0m"<<endl;
+    else if (color=="white") cout<<"\033[0m"<<name<<text<<"\033[0m"<<endl;
 
+    else if (color=="black") cout<<"\033[30m"<<name<<text<<"\033[0m"<<endl;
+    else cout<<color<<name<<text<<"\033[0m"<<endl;
+
+}
 //move car
 void car::move() {
     if (track ==2){
@@ -117,6 +117,9 @@ void car::move() {
         }
         else if (y >= 0.65 and direction == "up") {
             rotate_right();
+            laps++;
+            string text = " finished lap " + to_string(laps);
+            write_info(text);
         }
         else if (y <= -0.65 and direction == "down") {
             rotate_right();
@@ -136,33 +139,42 @@ void car::move() {
         }
     }
     else if (track == 1){
-        if (x>= 0.65 and direction == "right") {
-            rotate_right();
-        }
-        else if (x <= -0.65 and direction == "left" and laps<2) {
-            rotate_right();
-        }
-        else if (y >= 0.25 and direction == "up") {
-            rotate_right();
-            laps++;
-        }
-        else if (y <= -0.25 and direction == "down") {
-            rotate_right();
-        }
+        if (not finished){
+            if (x>= 0.65 and direction == "right") {
+                rotate_right();
+            }
+            else if (x <= -0.65 and direction == "left" and laps<2) {
+                rotate_right();
+            }
+            else if (y >= 0.25 and direction == "up") {
+                rotate_right();
+                laps++;
+                string text = " finished lap " + to_string(laps);
+                write_info(text);
+            }
+            else if (y <= -0.25 and direction == "down") {
+                rotate_right();
+            }
 
-        if (direction == "right") {
-            x += speed;
-        }
-        else if (direction == "down") {
-            y -= speed;
-        }
-        else if (direction == "left") {
-            x -= speed;
-        }
-        else if (direction == "up") {
-            y += speed;
+            if (direction == "right") {
+                x += speed;
+            }
+            else if (direction == "down") {
+                y -= speed;
+            }
+            else if (direction == "left") {
+                x -= speed;
+                if (x <=-2){
+                    write_info(" finished race");
+                    finished = true;
+                }
+            }
+            else if (direction == "up") {
+                y += speed;
+            }
         }
     }
+
 }
 
 void car::set_speed(float desired_speed){
