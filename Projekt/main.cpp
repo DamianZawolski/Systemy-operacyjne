@@ -7,6 +7,8 @@ using namespace std;
 #include "car.h"
 #include <ctime>
 #include <thread>
+#include <string>
+#include <vector>
 
 int main() {
     // Initialize GLFW
@@ -33,15 +35,18 @@ int main() {
     }
 
     srand((unsigned) time(nullptr));
+    int number_of_cars_on_track2 = 3;
+    std::vector<car> cars_on_track_2;
+    std::vector<std::thread> thread_of_cars_on_track_2;
 
-    car car1_track2 = car(2, "car 1 on track 2");
-    car car2_track2 = car(2, "car 2 on track 2");
-    car car3_track2 = car(2, "car 3 on track 2");
-
-
-    thread thread_c1_t2(&car::simulate_car, &car1_track2);
-    thread thread_c2_t2(&car::simulate_car, &car2_track2);
-    thread thread_c3_t2(&car::simulate_car, &car3_track2);
+    for (int i=0; i<number_of_cars_on_track2; i++)
+    {
+        string name = "car " + to_string(i+1) + " on track 2";
+        cars_on_track_2.push_back(car(2, name));
+    }
+    for (auto &car: cars_on_track_2) {
+        thread_of_cars_on_track_2.emplace_back(std::thread(&car::simulate_car, &car));
+    }
 
     car car1_track1 = car(1, "car 1 on track 1");
     car car2_track1 = car(1, "car 2 on track 1");
@@ -69,9 +74,8 @@ int main() {
         glClear(GL_COLOR_BUFFER_BIT);
         // Render of roads and cars
         draw_all_roads();
-        car1_track2.draw();
-        car2_track2.draw();
-        car3_track2.draw();
+        for(auto& car : cars_on_track_2)
+            car.draw();
 
         car1_track1.draw();
         car2_track1.draw();
@@ -95,13 +99,11 @@ int main() {
         //exit if space is pressed
         if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) {
             //track 2 cars threads are finished immediately, for rest we have to wait
-            car1_track2.finished= true;
-            car2_track2.finished= true;
-            car3_track2.finished= true;
+            for(auto& car : cars_on_track_2)
+                car.finished= true;
+            for(auto& th : thread_of_cars_on_track_2)
+                th.join();
 
-            thread_c1_t2.join();
-            thread_c2_t2.join();
-            thread_c3_t2.join();
             thread_c1_t1.join();
             thread_c2_t1.join();
             thread_c3_t1.join();

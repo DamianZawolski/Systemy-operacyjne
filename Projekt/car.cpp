@@ -166,5 +166,8 @@ void car::simulate_car() {
     while (not finished) {
         move();
         std::this_thread::sleep_for(std::chrono::milliseconds(delay));
+        if (track==2){
+            cout<<name<<" "<<x<<endl;
+        }
     }
 }
