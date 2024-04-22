@@ -6,7 +6,7 @@ using namespace std;
 #include <chrono>
 #include "thread"
 
-car::car(int track, string name, string color) {
+car::car(int track, string name) {
     this->track = track;
     this->name = name;
     this-> finished = false;
@@ -48,16 +48,16 @@ car::car(int track, string name, string color) {
     float delay_value = (rand() % 21 + 10);
     if (track==2){delay_value = 20;}
     this->delay = delay_value;
-
-    if (color=="red"){this->r = 1; this->g = 0; this->b = 0; this->color = color;}
-    else if (color=="green"){this->r = 0; this->g = 1; this->b = 0; this->color = color;}
-    else if (color=="blue"){this->r = 0; this->g = 0; this->b = 1; this->color = color;}
-    else if (color=="yellow"){this->r = 1; this->g = 1; this->b = 0; this->color = color;}
-    else if (color=="cyan"){this->r = 0; this->g = 1; this->b = 1; this->color = color;}
-    else if (color=="magenta"){this->r = 1; this->g = 0; this->b = 1; this->color = color;}
-    else if (color=="white"){this->r = 1; this->g = 1; this->b = 1; this->color = color;}
-    else if (color=="grey"){this->r = 0.5; this->g = 0.5; this->b = 0.5; this->color = color;}
-    else{this->r = 0; this->g = 0; this->b = 0; this->color = color;}
+    int color_random = (rand() % 9);
+    if (color_random==0){this->r = 1; this->g = 0; this->b = 0; this->color = "red";}
+    else if (color_random==1){this->r = 0; this->g = 1; this->b = 0; this->color = "green";}
+    else if (color_random==2){this->r = 0; this->g = 0; this->b = 1; this->color = "blue";}
+    else if (color_random==3){this->r = 1; this->g = 1; this->b = 0; this->color = "yellow";}
+    else if (color_random==4){this->r = 0; this->g = 1; this->b = 1; this->color = "cyan";}
+    else if (color_random==5){this->r = 1; this->g = 0; this->b = 1; this->color = "magenta";}
+    else if (color_random==6){this->r = 1; this->g = 1; this->b = 1; this->color = "white";}
+    else if (color_random==7){this->r = 0.5; this->g = 0.5; this->b = 0.5; this->color = "grey";}
+    else{this->r = 0; this->g = 0; this->b = 0; this->color = "black";}
 
     this-> laps = 0;
 }

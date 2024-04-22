@@ -9,7 +9,7 @@ using namespace std;
 
 class car {
 public:
-    car(int track, string name, string color);
+    car(int track, string name);
     void draw();
     void move();
     void set_delay(float desired_delay);

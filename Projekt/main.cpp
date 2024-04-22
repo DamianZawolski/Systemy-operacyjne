@@ -34,24 +34,24 @@ int main() {
 
     srand((unsigned) time(nullptr));
 
-    car car1_track2 = car(2, "car 1 on track 2", "red");
-    car car2_track2 = car(2, "car 2 on track 2", "green");
-    car car3_track2 = car(2, "car 3 on track 2", "yellow");
+    car car1_track2 = car(2, "car 1 on track 2");
+    car car2_track2 = car(2, "car 2 on track 2");
+    car car3_track2 = car(2, "car 3 on track 2");
 
 
     thread thread_c1_t2(&car::simulate_car, &car1_track2);
     thread thread_c2_t2(&car::simulate_car, &car2_track2);
     thread thread_c3_t2(&car::simulate_car, &car3_track2);
 
-    car car1_track1 = car(1, "car 1 on track 1", "blue");
-    car car2_track1 = car(1, "car 2 on track 1", "magenta");
-    car car3_track1 = car(1, "car 3 on track 1", "cyan");
-    car car4_track1 = car(1, "car 4 on track 1", "white");
-    car car5_track1 = car(1, "car 5 on track 1", "red");
-    car car6_track1 = car(1, "car 6 on track 1", "green");
-    car car7_track1 = car(1, "car 7 on track 1", "yellow");
-    car car8_track1 = car(1, "car 8 on track 1", "black");
-    car car9_track1 = car(1, "car 9 on track 1", "grey");
+    car car1_track1 = car(1, "car 1 on track 1");
+    car car2_track1 = car(1, "car 2 on track 1");
+    car car3_track1 = car(1, "car 3 on track 1");
+    car car4_track1 = car(1, "car 4 on track 1");
+    car car5_track1 = car(1, "car 5 on track 1");
+    car car6_track1 = car(1, "car 6 on track 1");
+    car car7_track1 = car(1, "car 7 on track 1");
+    car car8_track1 = car(1, "car 8 on track 1");
+    car car9_track1 = car(1, "car 9 on track 1");
 
     thread thread_c1_t1(&car::simulate_car, &car1_track1);
     thread thread_c2_t1(&car::simulate_car, &car2_track1);
