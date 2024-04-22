@@ -44,11 +44,12 @@ car::car(int track, string name, string color) {
     float height_value = (rand() % 4 + 4) / 100.0;
     this->width = width_value;
     this->height = height_value;
-    //speed is random between 0.005 and 0.02
-    float speed_value = (rand() % 16 + 5) / 1000.0;
-    this->speed = speed_value;
+    //delay is random between 10 and 30 (slower is faster)
+    float delay_value = (rand() % 21 + 10);
+    if (track==2){delay_value = 20;}
+    this->delay = delay_value;
 
-    if (color=="red"){this->r = 1; this->g = 0; this->b = 0; this->speed = 0.03; this->color = color;}
+    if (color=="red"){this->r = 1; this->g = 0; this->b = 0; this->color = color;}
     else if (color=="green"){this->r = 0; this->g = 1; this->b = 0; this->color = color;}
     else if (color=="blue"){this->r = 0; this->g = 0; this->b = 1; this->color = color;}
     else if (color=="yellow"){this->r = 1; this->g = 1; this->b = 0; this->color = color;}
@@ -121,13 +122,13 @@ void car::move() {
             }
 
             if (direction == "right") {
-                x += speed;
+                x += 0.01;
             } else if (direction == "down") {
-                y -= speed;
+                y -= 0.01;
             } else if (direction == "left") {
-                x -= speed;
+                x -= 0.01;
             } else if (direction == "up") {
-                y += speed;
+                y += 0.01;
             }
         } else if (track == 1) {
                 if (x >= 0.65 and direction == "right") {
@@ -144,26 +145,26 @@ void car::move() {
                 }
 
                 if (direction == "right") {
-                    x += speed;
+                    x += 0.01;
                 } else if (direction == "down") {
-                    y -= speed;
+                    y -= 0.01;
                 } else if (direction == "left") {
-                    x -= speed;
+                    x -= 0.01;
                     if (x <= -2) {
                         write_info(" finished race");
                         finished = true;
                     }
                 } else if (direction == "up") {
-                    y += speed;
+                    y += 0.01;
             }}}
 
-void car::set_speed(float desired_speed){
-    this->speed = desired_speed;
+void car::set_delay(float desired_delay){
+    this->delay = desired_delay;
 }
 
 void car::simulate_car() {
     while (not finished) {
         move();
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
+        std::this_thread::sleep_for(std::chrono::milliseconds(delay));
     }
 }

@@ -12,12 +12,12 @@ public:
     car(int track, string name, string color);
     void draw();
     void move();
-    void set_speed(float desired_speed);
+    void set_delay(float desired_delay);
     void rotate_right();
     void simulate_car();
     void write_info(string text);
-    float x, y, width, height, r, g, b, speed, new_x, new_y;
-    int track, laps;
+    float x, y, width, height, r, g, b, new_x, new_y;
+    int track, laps, delay;
     string direction, name, color;
     bool finished;
 };

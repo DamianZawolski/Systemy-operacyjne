@@ -16,7 +16,7 @@ int main() {
     }
 
     // Create a windowed mode window and its OpenGL context
-    GLFWwindow* window = glfwCreateWindow(1280, 720, "Damian Zawolski 260353", nullptr, nullptr);
+    GLFWwindow* window = glfwCreateWindow(960, 640, "Damian Zawolski 260353", nullptr, nullptr);
     if (!window) {
         cerr << "Failed to create window!" << endl;
         glfwTerminate();
@@ -38,9 +38,6 @@ int main() {
     car car2_track2 = car(2, "car 2 on track 2", "green");
     car car3_track2 = car(2, "car 3 on track 2", "yellow");
 
-    car1_track2.set_speed(0.01);
-    car2_track2.set_speed(0.01);
-    car3_track2.set_speed(0.01);
 
     thread thread_c1_t2(&car::simulate_car, &car1_track2);
     thread thread_c2_t2(&car::simulate_car, &car2_track2);
