@@ -53,7 +53,7 @@ int main() {
 
     for (int i=0; i<number_of_cars_on_track1; i++)
     {
-        string name = "car " + to_string(i+1) + " on track 2";
+        string name = "car " + to_string(i+1) + " on track 1";
         cars_on_track_1.push_back(car(1, name));
     }
 

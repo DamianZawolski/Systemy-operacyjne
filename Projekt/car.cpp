@@ -39,7 +39,6 @@ car::car(int track, string name) {
             this->y = -0.65;
             this->direction = "left";
         }
-        cout<<"x "<<x<<" y "<<y<<endl;
     }
     //width is random between 0.09 and 0.15
     float width_value = (rand() % 7 +9) / 100.0;
