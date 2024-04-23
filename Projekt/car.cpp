@@ -5,6 +5,8 @@ using namespace std;
 #include "iostream"
 #include <chrono>
 #include "thread"
+#include <vector>
+#include <thread>
 
 car::car(int track, string name) {
     this->track = track;
@@ -19,16 +21,16 @@ car::car(int track, string name) {
         int rand_wall = (rand() % 4);
         if (rand_wall == 0){
             this->x = 0.25;
-            this->y = (rand() % 13 -6)/10;
+            this->y = (((rand() % 13) -6)/10);
             this->direction = "right";
         }
         else if (rand_wall == 1){
             this->x = -0.25;
-            this->y = (rand() % 13 -6)/10;
+            this->y = (((rand() % 13) -6)/10);
             this->direction = "left";
         }
         else if (rand_wall == 2){
-            this->x = (rand() % 5 -2)/10;
+            this->x = (((rand() % 5) -2)/10);
             this->y = 0.65;
             this->direction = "right";
         }
@@ -37,6 +39,7 @@ car::car(int track, string name) {
             this->y = -0.65;
             this->direction = "left";
         }
+        cout<<"x "<<x<<" y "<<y<<endl;
     }
     //width is random between 0.09 and 0.15
     float width_value = (rand() % 7 +9) / 100.0;
@@ -163,11 +166,20 @@ void car::set_delay(float desired_delay){
 }
 
 void car::simulate_car() {
+    bool run = false;
+    while (not run and track==1){
+        int random_number = (rand() % 2000);
+        if (not finished and random_number>1){
+            int random_time = (rand() % 1000 + 100);
+            std::this_thread::sleep_for(std::chrono::milliseconds(random_time));
+        }
+        else{
+            run = true;
+        }
+    }
+
     while (not finished) {
         move();
         std::this_thread::sleep_for(std::chrono::milliseconds(delay));
-        if (track==2){
-            cout<<name<<" "<<x<<endl;
-        }
     }
 }

@@ -6,6 +6,8 @@ using namespace std;
 #include <pthread.h>
 #include <string>
 #include "iostream"
+#include <vector>
+#include <thread>
 
 class car {
 public:
