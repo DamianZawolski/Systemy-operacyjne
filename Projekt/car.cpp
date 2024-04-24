@@ -1,14 +1,33 @@
 using namespace std;
 #include "car.h"
+#include "intersection.h"
 #include <GL/glew.h>
 #include <string>
 #include "iostream"
 #include <chrono>
 #include "thread"
 #include <vector>
-#include <thread>
+#include <mutex>
+
+std::vector<intersection> all_intersections;
+
+std::mutex m; // Add mutex object
+
+void set_all_intersections(std::vector<intersection> vec){
+    for (auto &intersection: vec) {
+        std::lock_guard<std::mutex> lock(m); // Add lock_guard to ensure thread-safe access
+        all_intersections.push_back(intersection);
+    }
+}
+
+bool return_status_of_interception(int i){
+    std::lock_guard<std::mutex> lock(m); // Add lock_guard to ensure thread-safe access
+    bool value = all_intersections[i-1].used;
+    return value;
+}
 
 car::car(int track, string name) {
+    this->intersection = 0;
     this->track = track;
     this->name = name;
     this-> finished = false;
@@ -132,6 +151,18 @@ void car::move() {
             } else if (direction == "up") {
                 y += 0.01;
             }
+
+            if (x>=-0.3 and x<=-0.2 and y>=0.2 and y<=0.3){
+                this->intersection = 1;}
+            else if (x>=0.2 and x<=0.3 and y>=0.2 and y<=0.3){
+                this->intersection = 2;}
+            else if (x>=0.2 and x<=0.3 and y>=-0.3 and y<=-0.2){
+                this->intersection = 3;}
+            else if (x>=-0.3 and x<=-0.2 and y>=-0.3 and y<=-0.2){
+                this->intersection = 4;}
+            else{
+                this->intersection = 0;}
+
         } else if (track == 1) {
                 if (x >= 0.65 and direction == "right") {
                     rotate_right();
@@ -158,10 +189,32 @@ void car::move() {
                     }
                 } else if (direction == "up") {
                     y += 0.01;
-            }}}
+            }
+                if (x>=-0.3 and x<=-0.2 and y>=0.2 and y<=0.3) {
+                    cout << "Car on upper left intersection" << endl;
+                    this->intersection = 1;
+                }
+        }}
 
 void car::set_delay(float desired_delay){
     this->delay = desired_delay;
+}
+
+void car::set_list_of_cars_on_track_1(std::vector<car> cars){
+    this->cars_on_track_1 = cars;
+};
+
+bool car::check_if_car_on_intersection(int intersection){
+
+    bool result = false;
+    for (auto &car: cars_on_track_1) {
+        if (car.intersection == intersection){
+            result = true;
+            cout<<"There is car on intersection "<<intersection<<endl;
+            break;
+        }
+    }
+    return result;
 }
 
 void car::simulate_car() {
@@ -179,6 +232,8 @@ void car::simulate_car() {
 
     while (not finished) {
         move();
+        check_if_car_on_intersection(1);
         std::this_thread::sleep_for(std::chrono::milliseconds(delay));
+        cout<<all_intersections[0].used<<endl;
     }
 }

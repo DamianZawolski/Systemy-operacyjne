@@ -10,7 +10,7 @@ void draw_road(float corner1_x, float corner1_y, float corner2_x, float corner2_
 void draw_all_roads(){
     glClear(GL_COLOR_BUFFER_BIT);
     glBegin(GL_QUADS);
-    glColor3f(0.1f, 0.1f, 0.1);
+    glColor3f(0.05f, 0.05f, 0.05);
 
     float corner1_x = -0.7f;
     float corner1_y = 0.2f;
@@ -32,7 +32,6 @@ void draw_all_roads(){
     corner2_x = 0.6f;
     draw_road(corner1_x, corner1_y, corner2_x, corner2_y);
 
-    glColor3f(0.05f, 0.05f, 0.05);
     corner1_x = -0.2f;
     corner1_y = -0.7f;
     corner2_x = 0.2f;

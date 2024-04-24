@@ -7,6 +7,8 @@ add_executable(Systemy_operacyjne
         Projekt/main.cpp
         Projekt/road.h
         Projekt/road.cpp
-        Projekt/car.cpp)
+        Projekt/car.cpp
+        Projekt/intersection.cpp
+        Projekt/intersection.h)
 
 add_library()

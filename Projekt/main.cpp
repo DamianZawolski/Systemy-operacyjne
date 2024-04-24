@@ -5,10 +5,13 @@ using namespace std;
 #include <GLFW/glfw3.h>
 #include "road.h"
 #include "car.h"
+#include "intersection.h"
 #include <ctime>
 #include <thread>
 #include <string>
 #include <vector>
+
+
 
 int main() {
     // Initialize GLFW
@@ -38,9 +41,11 @@ int main() {
 
     int number_of_cars_on_track1 = 100;
     int number_of_cars_on_track2 = 3;
+    int number_of_intersections = 4;
 
     std::vector<car> cars_on_track_1;
     std::vector<car> cars_on_track_2;
+    std::vector<intersection> intersections;
 
     std::vector<std::thread> thread_of_cars_on_track_1;
     std::vector<std::thread> thread_of_cars_on_track_2;
@@ -55,6 +60,11 @@ int main() {
     {
         string name = "car " + to_string(i+1) + " on track 1";
         cars_on_track_1.push_back(car(1, name));
+    }
+
+    for (int i=0; i<number_of_intersections; i++)
+    {
+        intersections.push_back(intersection());
     }
 
     for (auto &car: cars_on_track_2) {

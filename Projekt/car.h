@@ -8,6 +8,7 @@ using namespace std;
 #include "iostream"
 #include <vector>
 #include <thread>
+#include "intersection.h"
 
 class car {
 public:
@@ -19,8 +20,15 @@ public:
     void simulate_car();
     void write_info(string text);
     float x, y, width, height, r, g, b, new_x, new_y;
-    int track, laps, delay;
+    int track, laps, delay, intersection;
     string direction, name, color;
     bool finished;
+    std::vector<car> cars_on_track_1;
+    void set_list_of_cars_on_track_1(std::vector<car> cars);
+    bool check_if_car_on_intersection(int intersection);
 };
 
+// intersections
+// 1    |    2
+//------------
+// 3    |    4
