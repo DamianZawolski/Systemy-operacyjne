@@ -11,17 +11,16 @@ using namespace std;
 
 std::vector<intersection> all_intersections;
 
-std::mutex m; // Add mutex object
+bool used = false;
 
 void set_all_intersections(std::vector<intersection> vec){
     for (auto &intersection: vec) {
-        std::lock_guard<std::mutex> lock(m); // Add lock_guard to ensure thread-safe access
         all_intersections.push_back(intersection);
     }
 }
 
 bool return_status_of_interception(int i){
-    std::lock_guard<std::mutex> lock(m); // Add lock_guard to ensure thread-safe access
+    std::lock_guard<std::mutex> lock(mutex);
     bool value = all_intersections[i-1].used;
     return value;
 }
@@ -153,7 +152,10 @@ void car::move() {
             }
 
             if (x>=-0.3 and x<=-0.2 and y>=0.2 and y<=0.3){
-                this->intersection = 1;}
+                this->intersection = 1;
+                return_status_of_interception(1);
+                //all_intersections[0].set_used();
+            }
             else if (x>=0.2 and x<=0.3 and y>=0.2 and y<=0.3){
                 this->intersection = 2;}
             else if (x>=0.2 and x<=0.3 and y>=-0.3 and y<=-0.2){
@@ -189,11 +191,25 @@ void car::move() {
                     }
                 } else if (direction == "up") {
                     y += 0.01;
+
             }
+
                 if (x>=-0.3 and x<=-0.2 and y>=0.2 and y<=0.3) {
                     cout << "Car on upper left intersection" << endl;
                     this->intersection = 1;
                 }
+                else if (x>=0.2 and x<=0.3 and y>=0.2 and y<=0.3) {
+                    cout << "Car on upper right intersection" << endl;
+                    this->intersection = 1;
+                }
+            else if (x>=-0.3 and x<=-0.2 and y>=-0.3 and y<=-0.2) {
+                cout << "Car on bottom left intersection" << endl;
+                this->intersection = 2;
+            }
+            else if (x>=0.2 and x<=0.3 and y>=-0.3 and y<=-0.2) {
+                cout << "Car on upper right intersection" << endl;
+                this->intersection = 3;
+            }
         }}
 
 void car::set_delay(float desired_delay){
@@ -234,6 +250,5 @@ void car::simulate_car() {
         move();
         check_if_car_on_intersection(1);
         std::this_thread::sleep_for(std::chrono::milliseconds(delay));
-        cout<<all_intersections[0].used<<endl;
     }
 }
