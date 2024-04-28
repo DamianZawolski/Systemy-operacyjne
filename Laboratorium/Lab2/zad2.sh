@@ -27,12 +27,16 @@ directory="ddd"
 file_name="drugi"
 file_text="Ala ma kota."
 
+# Jeśli plik nie istnieje (-e jest prawdą jeśli plik istnieje)
 if [ ! -e "${directory}/${file_name}" ];
 then
+# Utworzenie pliku
     echo "${file_text}" > "${directory}/${file_name}"
 else
+# Jeśli plik istnieje, sprawdź czy zawiera odpowiedni tekst
     if [ "$(cat "${directory}/${file_name}")" != "${file_text}" ];
     then
+    # Jeśli nie, nadpisz plik
         echo "${file_text}" > "${directory}/${file_name}"
     fi
 fi

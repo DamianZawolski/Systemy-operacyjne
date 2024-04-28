@@ -28,17 +28,23 @@ directory="ddd"
 file_name="całość"
 source_directory="aaa"
 
+# Jeśli plik istnieje (-e jest prawdą jeśli plik istnieje)
 if [ -e "${directory}/${file_name}" ];
 then
+# Usunięcie pliku
     rm "${directory}/${file_name}"
 fi
 
+# Utworzenie pliku
 touch "${directory}/${file_name}"
 
+# Dla każdego pliku w katalogu źródłowym
 for file in "${source_directory}"/*;
 do
+# Jeśli plik jest zwykły (-f jest prawdą jeśli plik istnieje i jest zwykły)
     if [ -f "${file}" ];
     then
+    # Dołącz zawartość pliku do pliku docelowego
         cat "${file}" >> "${directory}/${file_name}"
     fi
 done

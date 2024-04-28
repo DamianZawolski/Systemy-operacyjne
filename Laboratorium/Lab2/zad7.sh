@@ -28,10 +28,15 @@ source_directory="bbb"
 directory="ddd"
 file_name="ostrzeżenie"
 content="Uważaj na te pliki:"
+
+# Utworzenie pliku
 touch "${directory}/${file_name}"
+# Zapisanie nagłówka pliku
 echo "${content}" > "${directory}/${file_name}"
 
+# Dla każdego pliku w katalogu źródłowym (który jest wykonywalny)
 for file in $(find "${source_directory}" -type f -executable);
 do
+# Zapisanie nazwy pliku do pliku docelowego
     echo "$(basename "${file}")" >> "${directory}/${file_name}"
 done

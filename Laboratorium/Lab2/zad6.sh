@@ -27,12 +27,16 @@ directory="bbb"
 source_directory="ddd"
 file_name="bardzo tajna treść"
 
+# Dla każdego pliku w katalogu
 for file in $(find "${directory}" -type f);
 do
+# Jeśli zawartość pliku jest taka sama jak zawartość pliku źródłowego
     if [ "$(cat "${file}")" == "$(cat "${source_directory}/${file_name}")" ];
     then
+    # Jeśli plik nie istnieje w katalogu źródłowym
         if [ ! -e "${source_directory}/$(basename "${file}")" ];
         then
+        # Skopiuj plik
             cp "${file}" "${source_directory}"
         fi
     fi

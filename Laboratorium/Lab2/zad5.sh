@@ -31,15 +31,20 @@ directory="ddd"
 directory2="głęboki"
 directory3="bbb"
 
+# Jeśli katalog nie istnieje
 if [ ! -d "${directory}/${directory2}" ];
 then
+# Utworzenie katalogu
     mkdir "${directory}/${directory2}"
 fi
 
+# Dla każdego pliku w katalogu źródłowym
 for file in $(find "${directory3}" -type f);
 do
+# Jeśli plik nie istnieje w katalogu docelowym (basename zwraca nazwę pliku bez ścieżki)
     if [ ! -e "${directory}/${directory2}/$(basename "${file}")" ];
     then
+    # Skopiuj plik
         cp "${file}" "${directory}/${directory2}"
     fi
 done

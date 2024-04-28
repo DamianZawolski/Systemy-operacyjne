@@ -26,25 +26,3 @@
 # procesu nie zgłoszą nam się problemy z dostępem do plików (to znaczy,
 # że na pewno możemy je przeczytać).
 #
-
-directory="ddd/zasoby"
-file_name="tajne hasła"
-source_directory="ccc"
-header="---"
-
-if [ -e "${directory}/${file_name}" ];
-then
-    rm "${directory}/${file_name}"
-fi
-
-touch "${directory}/${file_name}"
-
-for file in $(find "${source_directory}" -type f);
-do
-    if [ -r "${file}" ];
-    then
-        echo "${header} $(basename "${file}")" >> "${directory}/${file_name}"
-        cat "${file}" >> "${directory}/${file_name}"
-    fi
-done
-

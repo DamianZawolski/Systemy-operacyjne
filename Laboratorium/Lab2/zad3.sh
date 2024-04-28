@@ -27,10 +27,13 @@
 directory="ddd"
 source_directory="aaa"
 
+# Dla każdego pliku w katalogu źródłowym
 for file in "${source_directory}"/*;
 do
+# Jeśli plik nie istnieje w katalogu docelowym
     if [ ! -e "${directory}/$(basename "${file}")" ];
     then
+    # Skopiuj plik
         cp "${file}" "${directory}"
     fi
 done

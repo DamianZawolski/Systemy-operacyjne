@@ -25,7 +25,9 @@
 directory="ddd"
 file_name="pierwszy"
 
+# Jeśli plik nie istnieje (-e jest prawdą jeśli plik istnieje)
 if [ ! -e "${directory}/${file_name}" ];
 then
+# Utworzenie pliku
     touch "${directory}/${file_name}"
 fi
