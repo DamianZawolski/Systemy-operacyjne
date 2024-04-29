@@ -24,4 +24,17 @@
 # dodatkowych plików/dowiązań wewnętrznych.
 #
 
+# Ustawienie zmiennych
+source_directories=("aaa" "bbb" "ccc")
+directory="ddd"
 
+# Jeżeli katalog docelowy nie istnieje, to go utwórz
+if [ ! -d "${directory}" ]; then
+    mkdir -p "${directory}"
+fi
+
+# Dla każdego katalogu w katalogu źródłowym wykonaj dowiązanie do katalogu docelowego
+for source_directory in "${source_directories[@]}"; do
+    # Utwórz dowiązanie do katalogu w katalogu docelowym
+    ln -s "$(realpath "${source_directory}")" "${directory}/$(basename "${source_directory}")"
+done

@@ -26,4 +26,14 @@
 # (na przykład: bravo:../aaa/bravo).
 #
 
+# Ustawienie zmiennych
+directory="ccc"
 
+# Dla każdego dowiązania symbolicznego w katalogu wykonaj sprawdzenie, czy wskazuje na istniejący plik
+for link in $(find "${directory}" -type l); do
+    # Sprawdź, czy wskazywany plik istnieje
+    if [ ! -e "${link}" ]; then
+        # Wyświetl nazwę dowiązania i proponowaną poprawną ścieżkę
+        echo "$(basename "${link}"):$(find aaa bbb -name "$(basename "${link}")" -print -quit | sed -e 's/^/..\//')"
+    fi
+done

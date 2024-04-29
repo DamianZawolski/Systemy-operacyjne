@@ -25,4 +25,15 @@
 # przez dowiązanie nie ma dla nas znaczenia.
 #
 
+# Ustawienie zmiennych
+directory="bbb"
+output_file="ddd/linki"
 
+# Dla każdego dowiązania symbolicznego w katalogu wykonaj sprawdzenie, czy wskazuje na istniejący plik
+for link in $(find "${directory}" -type l); do
+    # Sprawdź, czy wskazywany plik istnieje
+    if [ -e "${link}" ]; then
+        # Wyświetl ścieżkę wskazywanego pliku jako ścieżkę kanoniczną
+        readlink -f "${link}" >> "${output_file}"
+    fi
+done

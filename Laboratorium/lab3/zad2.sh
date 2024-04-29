@@ -24,4 +24,12 @@
 # jeśli jakikolwiek plik o nazwie `drugi` już istnieje w `ddd`.
 #
 
+# Ustawienie zmiennych
+source_file="aaa/podstawa"
+link_name="ddd/drugi"
 
+# Sprawdzenie, czy plik o nazwie `drugi` już istnieje w `ddd`
+if [ ! -e "${link_name}" ]; then
+    # Utworzenie dowiązania symbolicznego
+    ln -s "${source_file}" "${link_name}"
+fi

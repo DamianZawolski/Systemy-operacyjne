@@ -24,4 +24,14 @@
 # względem katalogu domowego bieżącego użytkownika (zmienna ${HOME}).
 #
 
+# Ustawienie zmiennych
+directory="ccc"
 
+# Dla każdego dowiązania symbolicznego w katalogu wykonaj sprawdzenie, czy wskazuje na istniejący plik
+for link in $(find "${directory}" -type l); do
+    # Sprawdź, czy wskazywany plik istnieje
+    if [ -e "${link}" ]; then
+        # Wyświetl ścieżkę wskazywanego pliku jako ścieżkę względną do katalogu domowego bieżącego użytkownika
+        readlink -f "${link}" --relative-to="${HOME}"
+    fi
+done

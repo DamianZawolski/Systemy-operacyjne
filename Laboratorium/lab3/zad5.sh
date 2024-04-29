@@ -24,4 +24,14 @@
 # Nie wyświetlać nic ponadto!
 #
 
+# Ustawienie zmiennych
+directory="ccc"
 
+# Dla każdego dowiązania symbolicznego w katalogu wykonaj sprawdzenie, czy wskazuje na istniejący plik
+for link in $(find "${directory}" -type l); do
+    # Sprawdź, czy wskazywany plik istnieje
+    if [ ! -e "${link}" ]; then
+        # Wyświetl ścieżkę wskazywanego pliku
+        readlink -f "${link}"
+    fi
+done

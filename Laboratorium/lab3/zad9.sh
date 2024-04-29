@@ -28,4 +28,15 @@
 # Przykład uruchomienia: ./zad9.sh '../aaa/echo'
 #
 
+# Ustawienie zmiennych
+directory="ccc"
+
+# Sprawdzenie, czy podano argument
+if [ -z "$1" ]; then
+    echo "Brak argumentu"
+    exit 1
+fi
+
+# Wyszukanie wszystkich dowiązań w katalogu, które wskazują na podaną ścieżkę
+find "${directory}" -type l -lname "$1" -exec basename {} \;
 

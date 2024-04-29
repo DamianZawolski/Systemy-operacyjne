@@ -25,3 +25,19 @@
 # `aaa`, `bbb` i wszelkie potrzebne ich podkatalogi.
 #
 
+source_directory1="aaa"
+source_directory2="bbb"
+directory="ddd/zapasy"
+
+#Jeżeli katalog docelowy nie istnieje, to go utwórz
+if [ ! -d "${directory}" ]; then
+    mkdir -p "${directory}"
+fi
+
+# Dla każdego pliku w katalogu źródłowym (który jest niezapisywalny) wykonaj kopię do katalogu docelowego (z zachowaniem struktury katalogów)
+for file in $(find "${source_directory1}" "${source_directory2}" -type f); do
+# Jeżeli plik jest niezapisywalny (-w jest prawdą jeśli plik istnieje i jest zapisywalny)
+    if [ ! -w "${file}" ]; then
+    cp --parents "${file}" "${directory}"
+    fi
+done

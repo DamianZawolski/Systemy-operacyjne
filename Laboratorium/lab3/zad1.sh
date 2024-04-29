@@ -23,4 +23,13 @@
 # jeśli jakikolwiek plik o nazwie `pierwszy` już istnieje w `ddd`.
 #
 
+# Ustawienie zmiennych
+source_file="aaa/podstawa"
+link_name="ddd/pierwszy"
+
+# Sprawdzenie, czy plik o nazwie `pierwszy` już istnieje w `ddd`
+if [ ! -e "${link_name}" ]; then
+    # Utworzenie dowiązania twardego
+    ln "${source_file}" "${link_name}"
+fi
 

@@ -24,4 +24,17 @@
 # upewnić się, że nie zmienimy żadnych istniejących plików w `ddd`.
 #
 
+# Ustawienie zmiennych
+source_directory="aaa"
+directory="ddd"
 
+# Jeżeli katalog docelowy nie istnieje, to go utwórz
+if [ ! -d "${directory}" ]; then
+    mkdir -p "${directory}"
+fi
+
+# Dla każdego pliku w katalogu źródłowym (który jest wykonywalny) wykonaj dowiązanie do katalogu docelowego
+for file in $(find "${source_directory}" -type f -executable); do
+    # Utwórz dowiązanie do pliku w katalogu docelowym
+    ln -s "${file}" "${directory}/$(basename "${file}")"
+done

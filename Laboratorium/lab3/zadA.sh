@@ -28,4 +28,23 @@
 # Przykład uruchomienia: ./zadA.sh 'bbb' 'ddd/wanted'
 #
 
+# Sprawdzenie, czy podano odpowiednią liczbę argumentów
+if [ "$#" -ne 2 ]; then
+    echo "Nie podano odpowiedniej liczby argumentów"
+    exit 1
+fi
 
+# Sprawdzenie, czy podany katalog istnieje
+if [ ! -d "$1" ]; then
+    echo "Podany katalog nie istnieje"
+    exit 1
+fi
+
+# Sprawdzenie, czy podany plik istnieje
+if [ ! -e "$2" ]; then
+    echo "Podany plik nie istnieje"
+    exit 1
+fi
+
+# Wyszukanie wszystkich dowiązań twardych do podanego pliku w podanym katalogu
+find "$1" -maxdepth 1 -type f -links +1 -samefile "$2" -exec basename {} \;
