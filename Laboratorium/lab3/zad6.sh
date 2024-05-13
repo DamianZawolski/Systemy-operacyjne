@@ -29,9 +29,11 @@ directory="ccc"
 
 # Dla każdego dowiązania symbolicznego w katalogu wykonaj sprawdzenie, czy wskazuje na istniejący plik
 for link in $(find "${directory}" -type l); do
-    # Sprawdź, czy wskazywany plik istnieje
+    # Sprawdź, czy dowiązanie wskazuje na istniejący plik
     if [ -e "${link}" ]; then
-        # Wyświetl ścieżkę wskazywanego pliku jako ścieżkę względną do katalogu domowego bieżącego użytkownika
-        readlink -f "${link}" --relative-to="${HOME}"
+        # Pobranie celu dowiązania symbolicznego
+        target=$(readlink "${link}")
+        # Wypisanie pełnej ścieżki do celu dowiązania
+        echo "${target/#$HOME/~}"
     fi
 done

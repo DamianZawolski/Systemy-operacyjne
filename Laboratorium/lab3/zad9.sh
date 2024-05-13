@@ -39,4 +39,3 @@ fi
 
 # Wyszukanie wszystkich dowiązań w katalogu, które wskazują na podaną ścieżkę
 find "${directory}" -type l -lname "$1" -exec basename {} \;
-

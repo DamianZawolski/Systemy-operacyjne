@@ -25,11 +25,11 @@
 #
 
 # Ustawienie zmiennych
-source_file="aaa/podstawa"
+file="aaa/podstawa"
 link_name="ddd/drugi"
 
 # Sprawdzenie, czy plik o nazwie `drugi` już istnieje w `ddd`
 if [ ! -e "${link_name}" ]; then
     # Utworzenie dowiązania symbolicznego
-    ln -s "${source_file}" "${link_name}"
+    ln -s "$(realpath "${file}")" "${link_name}"
 fi
