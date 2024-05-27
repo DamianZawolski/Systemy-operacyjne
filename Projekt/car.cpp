@@ -193,8 +193,7 @@ void car::write_info(string text)
 
 void car::move(intersections all_intersections, all_cars &cars_on_track_1, all_cars &cars_on_track_2)
 {
-
-    if (track == 2 and not stopped == 0)
+    if (track == 2)
     {
         if (x >= 0.25 and direction == "right")
         {
@@ -220,7 +219,7 @@ void car::move(intersections all_intersections, all_cars &cars_on_track_1, all_c
         {
             x += 0.01;
         }
-        else if (direction == "down")
+        else if (direction == "down" and stopped == 0)
         {
             y -= 0.01;
         }
@@ -228,11 +227,11 @@ void car::move(intersections all_intersections, all_cars &cars_on_track_1, all_c
         {
             x -= 0.01;
         }
-        else if (direction == "up")
+        else if (direction == "up" and stopped == 0)
         {
             y += 0.01;
         }
-
+        /*
         if (x >= -0.3 and x <= -0.2 and y >= 0.2 and y <= 0.3)
         {
             this->intersection = 1;
@@ -252,7 +251,7 @@ void car::move(intersections all_intersections, all_cars &cars_on_track_1, all_c
         else
         {
             this->intersection = 0;
-        }
+        }*/
         all_intersections.update_intersection_status(cars_on_track_1, cars_on_track_2);
     }
     else if (track == 1 and stopped == 0)

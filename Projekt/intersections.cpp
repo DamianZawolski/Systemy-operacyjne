@@ -44,52 +44,54 @@ void intersections::update_intersection_status(all_cars &cars_on_track_1, all_ca
     std::lock_guard<std::mutex> lock2(mtx_all_cars);
 
     std::vector<bool> intersection_state_temp(this->intersection_state.size(), false);
+
     for (auto &&car : cars_on_track_1.list_of_cars)
     {
-        if (car.x >= 0.3 and car.x <= 0.4 and car.y >= 0.2 and car.y <= 0.3)
+        if (car.x >= -0.4 and car.x <= -0.2 and car.y >= 0.2 and car.y <= 0.3)
         {
             intersection_state_temp[0] = true;
         }
-        else if (car.x >= -0.3 and car.x <= -0.2 and car.y >= 0.3 and car.y <= 0.4)
+        else if (car.x >= 0.1 and car.x <= 0.3 and car.y >= 0.2 and car.y <= 0.3)
         {
             intersection_state_temp[1] = true;
         }
-        else if (car.x >= -0.3 and car.x <= -0.2 and car.y >= -0.3 and car.y <= -0.2)
+        else if (car.x >= -0.3 and car.x <= -0.1 and car.y >= -0.3 and car.y <= -0.2)
         {
             intersection_state_temp[2] = true;
         }
-        else if (car.x >= 0.3 and car.x <= 0.4 and car.y >= -0.3 and car.y <= -0.2)
+        else if (car.x >= 0.2 and car.x <= 0.4 and car.y >= -0.3 and car.y <= -0.2)
         {
             intersection_state_temp[3] = true;
         }
     }
     this->intersection_state = intersection_state_temp;
-
-    for (auto &&car : cars_on_track_1.list_of_cars)
+    /*
+    cout << "intersection 1: " << this->intersection_state[0];
+    cout << " intersection 2: " << this->intersection_state[1];
+    cout << " intersection 3: " << this->intersection_state[2];
+    cout << " intersection 4: " << this->intersection_state[3] << endl;*/
+    for (auto &&car : cars_on_track_2.list_of_cars)
     {
-        if (car.x >= -0.3 and car.x <= -0.2 and car.y >= 0 and car.y <= 0.3)
+        car.stopped = 0;
+    }
+
+    for (auto &&car : cars_on_track_2.list_of_cars)
+    {
+        if (car.x >= -0.3 and car.x <= -0.2 and car.y >= 0 and car.y <= 0.2 and this->intersection_state[0] == true)
         {
-            // 1
             car.stopped = 1;
         }
-        else if (car.x >= 0.2 and car.x <= 0.3 and car.y >= 0.5 and car.y <= 0.3)
+        else if (car.x >= 0.2 and car.x <= 0.3 and car.y >= 0.3 and car.y <= 0.5 and this->intersection_state[1] == true)
         {
-            // 2
-            car.stopped = 2;
+            car.stopped = 1;
         }
-        else if (car.x >= 0.2 and car.x <= 0.3 and car.y >= -0.3 and car.y <= 0)
+        else if (car.x >= -0.3 and car.x <= -0.2 and car.y >= -0.5 and car.y <= -0.3 and this->intersection_state[2] == true)
         {
-            // 4
-            car.stopped = 3;
+            car.stopped = 1;
         }
-        else if (car.x >= -0.3 and car.x <= -0.2 and car.y >= -0.5 and car.y <= -0.2)
+        else if (car.x >= 0.2 and car.x <= 0.3 and car.y >= -0.2 and car.y <= -0 and this->intersection_state[3] == true)
         {
-            // 3
-            car.stopped = 4;
-        }
-        else if (intersection_state[car.stopped] == 0)
-        {
-            car.stopped = 0;
+            car.stopped = 1;
         }
     }
 }
