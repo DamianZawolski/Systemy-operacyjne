@@ -7,33 +7,30 @@ using namespace std;
 #include "iostream"
 #include <vector>
 #include <thread>
-#include "intersections.h"
 
 class all_cars;
-
+class intersections;
 class car
 {
 public:
-    car(int track, string name);
+    car(int track, string name, int id);
     void draw();
-    void move(intersections all_intersections, all_cars all_cars);
+    void move(intersections all_intersections, all_cars &cars_on_track_1, all_cars &cars_on_track_2);
     void set_delay(float desired_delay);
     void rotate_right();
-    void simulate_car(intersections all_intersections, all_cars cars_on_track_1);
+    void simulate_car(intersections &all_intersections, all_cars &cars_on_track_1, all_cars &cars_on_track_2);
     void write_info(string text);
     float x, y, width, height, r, g, b;
-    int track, laps, delay, intersection;
+    int track, laps, delay, intersection, id, stopped;
     string direction, name, color;
     bool finished;
-    std::vector<car> cars_on_track_1;
-
-    void set_list_of_cars_on_track_1(std::vector<car> cars);
 };
 
 // intersections
-// 0    |    1
+// 1    |    2
 //------------
-// 2    |    3
+// 3    |    4
 
+#include "intersections.h"
 #include "all_cars.h"
 #endif // SYSTEMY_OPERACYJNE_CAR_H

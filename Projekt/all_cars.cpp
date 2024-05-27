@@ -6,9 +6,6 @@ using namespace std;
 #include <chrono>
 #include "thread"
 #include <vector>
-#include <mutex>
-
-std::mutex mtx_all_cars;
 
 all_cars::all_cars()
 {
