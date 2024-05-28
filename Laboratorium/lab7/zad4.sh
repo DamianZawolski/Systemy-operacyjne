@@ -22,3 +22,4 @@
 # Wynik wyświetlić jako ułamek w postaci X/Y.
 #
 
+echo "$(grep -cvE '^[[:space:]]*$' dodatkowe/slajdy.tex)/$(grep -c '^' dodatkowe/slajdy.tex)"

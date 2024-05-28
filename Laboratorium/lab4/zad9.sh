@@ -27,7 +27,7 @@
 #
 
 
-SOURCE_DIR="linux-5.11.13"
+dir="linux-5.11.13"
 
 # Znajdź pliki spełniające warunki: rozmiar między 1MiB a 10MiB, nie zawierające cyfr w nazwie
-find "$SOURCE_DIR" -type f -size +1M -size -10M ! -name '*[0-9]*' -printf "%s %f\n"
+find "$dir" -type f -size +1M -size -10M ! -name '*[0-9]*' -printf "%s %f\n"

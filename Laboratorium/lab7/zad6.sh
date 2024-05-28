@@ -26,3 +26,4 @@
 # Jako wynik zwrócić same unikalne ścieżki, każdą w nowej linii.
 #
 
+grep -oE '\\fbox{\\includegraphics+[^[:space:]]+' dodatkowe/slajdy.tex | awk -F '[{}]' '{print $3}'

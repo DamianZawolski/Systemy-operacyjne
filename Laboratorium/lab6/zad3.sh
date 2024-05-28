@@ -28,3 +28,5 @@
 # pliku ze strony: https://people.sc.fsu.edu/~jburkardt/data/csv/csv.html
 #
 
+awk -F', *' 'NR > 1 && NF != 10 {print NR}' dodatkowe/cities.csv
+

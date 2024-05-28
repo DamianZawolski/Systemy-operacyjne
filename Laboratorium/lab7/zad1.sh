@@ -21,3 +21,6 @@
 # w nowej linii, bez powtórzeń, bez żadnych znaków innych niż litery.
 #
 
+#!/bin/bash
+
+awk '{for(i=1;i<=NF;i++) if($i ~ /^[A-Z][a-zA-Z]*$/) print $i}' dodatkowe/lipsum.txt | sort | uniq

@@ -22,3 +22,4 @@
 # pomijajac linie puste i takie, których jedyną zawartość stanowią spacje.
 #
 
+awk '{ gsub(/<[^>]+>/, "") } 1' dodatkowe/cpplint.txt | grep -vE '^[[:space:]]*$'

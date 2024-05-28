@@ -27,3 +27,12 @@
 # dotyczących liczby znaków!
 #
 
+awk '{
+    chars += length($0) + 1
+    words += NF
+    lines += 1
+} END {
+    print chars
+    print words
+    print lines
+}' dodatkowe/nowomowa.txt

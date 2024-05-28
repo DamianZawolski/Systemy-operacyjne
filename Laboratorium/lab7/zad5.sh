@@ -24,3 +24,4 @@
 # Zwrócić same unikalne nazwy, bez nawiasów, każdą nazwę w nowej linii.
 #
 
+grep -oE "def +[a-z_][a-zA-Z0-9_]*" dodatkowe/service.py | awk '{print $2}' | sort | uniq

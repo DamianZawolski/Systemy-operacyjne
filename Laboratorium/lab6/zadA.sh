@@ -36,3 +36,26 @@
 # i według przyjętej reguły – traktujemy ten wpis jak osobną osobę!
 #
 
+#!/bin/bash
+
+# Pobranie zawartości dokumentu tajemnicowego
+curl -sL http://tinyurl.com/doc-tajemnic > doc-tajemnic.txt
+
+# Użycie awk do analizy zawartości dokumentu i zliczania znaków między wpisami prowadzących
+awk -F ': ' '
+    /^Prowadzący:/ { 
+        if (name != "") { 
+            print length(content), name 
+        } 
+        name = $2 
+        content = "" 
+    } 
+    /^[^Prowadzący:]/ { 
+        content = content $0 
+    } 
+    END { 
+        print length(content), name 
+    }' doc-tajemnic.txt
+
+# Usunięcie pliku tymczasowego
+rm doc-tajemnic.txt

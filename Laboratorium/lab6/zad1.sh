@@ -26,3 +26,4 @@
 # (źródło: https://wolnelektury.pl/media/book/txt/pan-tadeusz.txt).
 #
 
+awk 'NR > 1 && NR%3 == 2' dodatkowe/tadeusz.txt

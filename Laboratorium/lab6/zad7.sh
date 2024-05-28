@@ -29,3 +29,4 @@
 # pliku ze strony: https://people.sc.fsu.edu/~jburkardt/data/csv/csv.html
 #
 
+awk -F ',' 'NR>1 {print $3, ($4+$5+$6+$7+2*$8)/6}' 'dodatkowe/grades.csv' | sed 's/^ *//g' | sed 's/"//g'
