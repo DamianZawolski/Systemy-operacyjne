@@ -55,28 +55,29 @@ int main()
 
     for (int i = 0; i < number_of_cars_on_track2; i++)
     {
-        string name = "car " + to_string(i + 1) + " on track 2";
-        cars_on_track_2.append_car(car(2, name));
+        string name = "car " + to_string(i) + " on track 2";
+        cars_on_track_2.append_car(car(2, name, i));
     }
 
     for (int i = 0; i < number_of_cars_on_track1; i++)
     {
-        string name = "car " + to_string(i + 1) + " on track 1";
-        cars_on_track_1.append_car(car(1, name));
+        string name = "car " + to_string(i) + " on track 1";
+        cars_on_track_1.append_car(car(1, name, i));
     }
 
     all_intersections.add_number_of_intersections(number_of_intersections);
 
     for (auto &car : cars_on_track_2.list_of_cars)
     {
-        thread_of_cars_on_track_2.emplace_back([&car, &all_intersections, &cars_on_track_1]()
-                                               { car.simulate_car(all_intersections, cars_on_track_1); });
+        thread_of_cars_on_track_2.emplace_back([&car, &all_intersections, &cars_on_track_1, &cars_on_track_2]()
+                                               { car.simulate_car(all_intersections, cars_on_track_1, cars_on_track_2); });
     }
 
+    std::mutex mtx_all_cars;
     for (auto &car : cars_on_track_1.list_of_cars)
     {
-        thread_of_cars_on_track_2.emplace_back([&car, &all_intersections, &cars_on_track_1]()
-                                               { car.simulate_car(all_intersections, cars_on_track_1); });
+        thread_of_cars_on_track_2.emplace_back([&car, &all_intersections, &cars_on_track_1, &cars_on_track_2]()
+                                               { car.simulate_car(all_intersections, cars_on_track_1, cars_on_track_2); });
     }
     // Loop until the user closes the window
     while (!glfwWindowShouldClose(window))

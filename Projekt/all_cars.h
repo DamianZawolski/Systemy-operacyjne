@@ -8,8 +8,10 @@ using namespace std;
 #include "iostream"
 #include <vector>
 #include <thread>
+#include <mutex>
 
 class car;
+class intersections;
 
 class all_cars
 {
@@ -20,4 +22,5 @@ public:
 };
 
 #include "car.h"
+#include "intersections.h"
 #endif // SO2_ALL_CARS_H
