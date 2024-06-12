@@ -56,7 +56,7 @@ car::car(int track, string name, int id)
     this->width = width_value;
     this->height = height_value;
     // delay is random between 10 and 30 (slower is faster)
-    float delay_value = (rand() % 21 + 10);
+    float delay_value = (rand() % 21 + 20);
     if (track == 2)
     {
         delay_value = 20;
@@ -311,7 +311,7 @@ void car::simulate_car(intersections &all_intersections, all_cars &cars_on_track
     bool run = false;
     while (not run and track == 1)
     {
-        int random_number = (rand() % 2000);
+        int random_number = (rand() % 1000);
         if (not finished and random_number > 1)
         {
             int random_time = (rand() % 1000 + 100);

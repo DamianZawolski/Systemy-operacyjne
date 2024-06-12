@@ -21,7 +21,8 @@ int main()
     }
 
     // Create a windowed mode window and its OpenGL context
-    GLFWwindow *window = glfwCreateWindow(960, 640, "Damian Zawolski 260353", nullptr, nullptr);
+    GLFWwindow *window = glfwCreateWindow(1280, 900, "Damian Zawolski 260353", nullptr, nullptr);
+
     if (!window)
     {
         cerr << "Failed to create window!" << endl;
