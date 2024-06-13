@@ -10,13 +10,13 @@ class intersections
 {
 public:
     intersections();
-    void add_number_of_intersections(int number_of_intersections);
-    std::vector<bool> intersection_state;
+    void set_up_number_of_intersections(int number_of_intersections);
+    std::vector<int> intersection_state;
     void set_all_unused();
-    void set_used(int intersection);
-    void set_unused(int intersection);
-    bool is_used(int intersection);
-    void update_intersection_status(all_cars &cars_on_track_1, all_cars &cars_on_track_2);
+    void add_car_to_intersection(int intersection);
+    void del_car_from_intersection(int intersection);
+    void print_intersections_status();
+    int return_intersection_state(int intersection);
 };
 
 #include "car.h"

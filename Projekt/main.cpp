@@ -13,6 +13,7 @@ using namespace std;
 
 int main()
 {
+    srand(static_cast<unsigned>(time(0)));
     // Initialize GLFW
     if (!glfwInit())
     {
@@ -66,7 +67,7 @@ int main()
         cars_on_track_1.append_car(car(1, name, i));
     }
 
-    all_intersections.add_number_of_intersections(number_of_intersections);
+    all_intersections.set_up_number_of_intersections(number_of_intersections);
 
     for (auto &car : cars_on_track_2.list_of_cars)
     {

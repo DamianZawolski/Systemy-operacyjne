@@ -15,7 +15,7 @@ class car
 public:
     car(int track, string name, int id);
     void draw();
-    void move(intersections all_intersections, all_cars &cars_on_track_1, all_cars &cars_on_track_2);
+    void move(intersections &all_intersections, all_cars &cars_on_track_1, all_cars &cars_on_track_2);
     void set_delay(float desired_delay);
     void rotate_right();
     void simulate_car(intersections &all_intersections, all_cars &cars_on_track_1, all_cars &cars_on_track_2);
@@ -24,6 +24,7 @@ public:
     int track, laps, delay, intersection, id, stopped;
     string direction, name, color;
     bool finished;
+    bool on_intersection;
 };
 
 // intersections

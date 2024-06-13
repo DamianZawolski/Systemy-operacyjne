@@ -6,6 +6,8 @@ using namespace std;
 #include <chrono>
 #include "thread"
 #include <vector>
+#include <cstdlib> // Include this header for the rand() function
+#include <ctime>   // Include this header for the time() function
 
 car::car(int track, string name, int id)
 {
@@ -14,6 +16,7 @@ car::car(int track, string name, int id)
     this->track = track;
     this->name = name;
     this->finished = false;
+    this->on_intersection = false;
     this->stopped = 0;
     if (track == 1)
     {
@@ -23,28 +26,34 @@ car::car(int track, string name, int id)
     }
     else
     {
-        int rand_wall = (rand() % 4);
+        // Seed the random number generator at the beginning of the program
+
+        int rand_wall = rand() % 4;
         if (rand_wall == 0)
         {
+            // between -0.6 and 0.6 for y
             this->x = 0.25;
-            this->y = (((rand() % 13) - 6) / 10);
+            this->y = -0.6f + static_cast<float>(rand()) / (static_cast<float>(RAND_MAX / 1.2f));
             this->direction = "right";
         }
         else if (rand_wall == 1)
         {
+            // between -0.6 and 0.6 for y
             this->x = -0.25;
-            this->y = (((rand() % 13) - 6) / 10);
+            this->y = -0.6f + static_cast<float>(rand()) / (static_cast<float>(RAND_MAX / 1.2f));
             this->direction = "left";
         }
         else if (rand_wall == 2)
         {
-            this->x = (((rand() % 5) - 2) / 10);
+            // between -0.2 and 0.2 for x
+            this->x = -0.2f + static_cast<float>(rand()) / (static_cast<float>(RAND_MAX / 0.4f));
             this->y = 0.65;
             this->direction = "right";
         }
         else
         {
-            this->x = (rand() % 5 - 2) / 10;
+            // between -0.2 and 0.2 for x
+            this->x = -0.2f + static_cast<float>(rand()) / (static_cast<float>(RAND_MAX / 0.4f));
             this->y = -0.65;
             this->direction = "left";
         }
@@ -191,10 +200,11 @@ void car::write_info(string text)
         cout << color << name << text << "\033[0m" << endl;
 }
 
-void car::move(intersections all_intersections, all_cars &cars_on_track_1, all_cars &cars_on_track_2)
+void car::move(intersections &all_intersections, all_cars &cars_on_track_1, all_cars &cars_on_track_2)
 {
     if (track == 2)
     {
+
         if (x >= 0.25 and direction == "right")
         {
             rotate_right();
@@ -214,6 +224,23 @@ void car::move(intersections all_intersections, all_cars &cars_on_track_1, all_c
         {
             rotate_right();
         }
+        stopped = 0;
+        if (x >= -0.3 and x <= -0.2 and y >= 0.05 and y <= 0.15 and all_intersections.return_intersection_state(0) > 0)
+        {
+            stopped = 1;
+        }
+        else if (x >= 0.2 and x <= 0.3 and y >= 0.35 and y <= 0.45 and all_intersections.return_intersection_state(1) > 0)
+        {
+            stopped = 1;
+        }
+        else if (x >= -0.3 and x <= -0.2 and y >= -0.45 and y <= -0.35 and all_intersections.return_intersection_state(2) > 0)
+        {
+            stopped = 1;
+        }
+        else if (x >= 0.2 and x <= 0.3 and y >= -0.15 and y <= -0.05 and all_intersections.return_intersection_state(3) > 0)
+        {
+            stopped = 1;
+        }
 
         if (direction == "right")
         {
@@ -231,28 +258,6 @@ void car::move(intersections all_intersections, all_cars &cars_on_track_1, all_c
         {
             y += 0.01;
         }
-        /*
-        if (x >= -0.3 and x <= -0.2 and y >= 0.2 and y <= 0.3)
-        {
-            this->intersection = 1;
-        }
-        else if (x >= 0.2 and x <= 0.3 and y >= 0.2 and y <= 0.3)
-        {
-            this->intersection = 2;
-        }
-        else if (x >= 0.2 and x <= 0.3 and y >= -0.3 and y <= -0.2)
-        {
-            this->intersection = 3;
-        }
-        else if (x >= -0.3 and x <= -0.2 and y >= -0.3 and y <= -0.2)
-        {
-            this->intersection = 4;
-        }
-        else
-        {
-            this->intersection = 0;
-        }*/
-        all_intersections.update_intersection_status(cars_on_track_1, cars_on_track_2);
     }
     else if (track == 1 and stopped == 0)
     {
@@ -296,6 +301,49 @@ void car::move(intersections all_intersections, all_cars &cars_on_track_1, all_c
         else if (direction == "up" and stopped == 0)
         {
             y += 0.01;
+        }
+
+        // entering intersection
+        if (x >= -0.6 and x <= -0.2 and y >= 0.2 and y <= 0.3 and not on_intersection)
+        {
+            all_intersections.add_car_to_intersection(0);
+            this->on_intersection = true;
+        }
+        else if (x >= -0.1 and x <= 0.3 and y >= 0.2 and y <= 0.3 and not on_intersection)
+        {
+            all_intersections.add_car_to_intersection(1);
+            this->on_intersection = true;
+        }
+        else if (x >= -0.3 and x <= 0.1 and y >= -0.3 and y <= -0.2 and not on_intersection)
+        {
+            all_intersections.add_car_to_intersection(2);
+            this->on_intersection = true;
+        }
+        else if (x >= 0.2 and x <= 0.6 and y >= -0.3 and y <= -0.2 and not on_intersection)
+        {
+            all_intersections.add_car_to_intersection(3);
+            this->on_intersection = true;
+        }
+        // leaving intersection
+        if (x >= -0.2 and x <= -0.1 and y >= 0.2 and y <= 0.3 and on_intersection)
+        {
+            all_intersections.del_car_from_intersection(0);
+            this->on_intersection = false;
+        }
+        else if (x >= 0.3 and x <= 0.4 and y >= 0.2 and y <= 0.3 and on_intersection)
+        {
+            all_intersections.del_car_from_intersection(1);
+            this->on_intersection = false;
+        }
+        else if (x >= -0.4 and x <= -0.3 and y >= -0.3 and y <= -0.2 and on_intersection)
+        {
+            all_intersections.del_car_from_intersection(2);
+            this->on_intersection = false;
+        }
+        else if (x >= 0.1 and x <= 0.2 and y >= -0.3 and y <= -0.2 and on_intersection)
+        {
+            all_intersections.del_car_from_intersection(3);
+            this->on_intersection = false;
         }
     }
 }

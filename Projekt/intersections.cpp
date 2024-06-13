@@ -10,11 +10,11 @@ intersections::intersections()
     this->intersection_state;
 }
 
-void intersections::add_number_of_intersections(int number_of_intersections)
+void intersections::set_up_number_of_intersections(int number_of_intersections)
 {
     for (int i = 0; i < number_of_intersections; i++)
     {
-        this->intersection_state.push_back(false);
+        this->intersection_state.push_back(0);
     }
 }
 void intersections::set_all_unused()
@@ -22,82 +22,33 @@ void intersections::set_all_unused()
     std::lock_guard<std::mutex> lock(mtx_intersections);
     for (auto &&i : this->intersection_state)
     {
-        i = false;
+        i = 0;
     }
 }
 
-void intersections::set_used(int intersection)
+void intersections::add_car_to_intersection(int intersection)
 {
     std::lock_guard<std::mutex> lock(mtx_intersections);
-    this->intersection_state[intersection] = true;
+    this->intersection_state[intersection]++;
 }
 
-void intersections::set_unused(int intersection)
+void intersections::del_car_from_intersection(int intersection)
 {
     std::lock_guard<std::mutex> lock(mtx_intersections);
-    this->intersection_state[intersection] = false;
+    this->intersection_state[intersection]--;
 }
 
-void intersections::update_intersection_status(all_cars &cars_on_track_1, all_cars &cars_on_track_2)
+int intersections::return_intersection_state(int intersection)
 {
     std::lock_guard<std::mutex> lock(mtx_intersections);
-    std::lock_guard<std::mutex> lock2(mtx_all_cars);
+    return this->intersection_state[intersection];
+}
 
-    std::vector<bool> intersection_state_temp(this->intersection_state.size(), false);
-
-    for (auto &&car : cars_on_track_1.list_of_cars)
-    {
-        if (car.x >= -0.4 and car.x <= -0.2 and car.y >= 0.2 and car.y <= 0.3)
-        {
-            intersection_state_temp[0] = true;
-        }
-        else if (car.x >= 0.1 and car.x <= 0.3 and car.y >= 0.2 and car.y <= 0.3)
-        {
-            intersection_state_temp[1] = true;
-        }
-        else if (car.x >= -0.3 and car.x <= -0.1 and car.y >= -0.3 and car.y <= -0.2)
-        {
-            intersection_state_temp[2] = true;
-        }
-        else if (car.x >= 0.2 and car.x <= 0.4 and car.y >= -0.3 and car.y <= -0.2)
-        {
-            intersection_state_temp[3] = true;
-        }
-    }
-    this->intersection_state = intersection_state_temp;
-    /*
+void intersections::print_intersections_status()
+{
+    std::lock_guard<std::mutex> lock(mtx_intersections);
     cout << "intersection 1: " << this->intersection_state[0];
     cout << " intersection 2: " << this->intersection_state[1];
     cout << " intersection 3: " << this->intersection_state[2];
-    cout << " intersection 4: " << this->intersection_state[3] << endl;*/
-    for (auto &&car : cars_on_track_2.list_of_cars)
-    {
-        car.stopped = 0;
-    }
-
-    for (auto &&car : cars_on_track_2.list_of_cars)
-    {
-        if (car.x >= -0.3 and car.x <= -0.2 and car.y >= 0 and car.y <= 0.2 and this->intersection_state[0] == true)
-        {
-            car.stopped = 1;
-        }
-        else if (car.x >= 0.2 and car.x <= 0.3 and car.y >= 0.3 and car.y <= 0.5 and this->intersection_state[1] == true)
-        {
-            car.stopped = 1;
-        }
-        else if (car.x >= -0.3 and car.x <= -0.2 and car.y >= -0.5 and car.y <= -0.3 and this->intersection_state[2] == true)
-        {
-            car.stopped = 1;
-        }
-        else if (car.x >= 0.2 and car.x <= 0.3 and car.y >= -0.2 and car.y <= -0 and this->intersection_state[3] == true)
-        {
-            car.stopped = 1;
-        }
-    }
-}
-
-bool intersections::is_used(int intersection)
-{
-    std::lock_guard<std::mutex> lock(mtx_intersections);
-    return this->intersection_state[intersection - 1];
+    cout << " intersection 4: " << this->intersection_state[3] << endl;
 }
