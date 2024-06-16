@@ -26,7 +26,7 @@ public:
 private:
     std::vector<int> intersection_count;
     std::vector<std::shared_ptr<std::condition_variable>> cv_intersections;
-    std::vector<bool> intersections_ready;
+    std::vector<bool> intersections_empty;
 };
 
 #include "car.h"

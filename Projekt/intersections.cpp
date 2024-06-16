@@ -14,7 +14,7 @@ void intersections::set_up_number_of_intersections(int number_of_intersections)
     {
         this->intersection_count.push_back(0);
         this->cv_intersections.push_back(std::make_shared<std::condition_variable>());
-        this->intersections_ready.push_back(true);
+        this->intersections_empty.push_back(true);
     }
 }
 
@@ -25,7 +25,7 @@ void intersections::set_all_unused()
     {
         i = 0;
     }
-    for (auto &&i : this->intersections_ready)
+    for (auto &&i : this->intersections_empty)
     {
         i = true;
     }
@@ -39,9 +39,9 @@ void intersections::add_car_to_intersection(int intersection)
 {
     std::lock_guard<std::mutex> lock(mtx_intersections);
     this->intersection_count[intersection]++;
-    if (this->intersection_count[intersection] > 1)
+    if (this->intersection_count[intersection] >= 1)
     {
-        this->intersections_ready[intersection] = false;
+        this->intersections_empty[intersection] = false;
     }
 }
 
@@ -51,7 +51,7 @@ void intersections::del_car_from_intersection(int intersection)
     this->intersection_count[intersection]--;
     if (this->intersection_count[intersection] <= 0)
     {
-        this->intersections_ready[intersection] = true;
+        this->intersections_empty[intersection] = true;
         this->cv_intersections[intersection]->notify_all();
     }
 }
@@ -80,5 +80,5 @@ std::shared_ptr<std::condition_variable> intersections::get_cv_intersection(int 
 bool intersections::get_intersection_ready(int index)
 {
     std::lock_guard<std::mutex> lock(mtx_intersections);
-    return intersections_ready[index];
+    return intersections_empty[index];
 }

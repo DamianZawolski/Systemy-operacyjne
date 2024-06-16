@@ -72,7 +72,7 @@ car::car(int track, string name, int id)
         delay_value = 20;
     }
     this->delay = delay_value;
-    int color_random = (rand() % 9);
+    int color_random = (rand() % 8);
     if (color_random == 0)
     {
         this->r = 1;
@@ -122,19 +122,12 @@ car::car(int track, string name, int id)
         this->b = 1;
         this->color = "white";
     }
-    else if (color_random == 7)
+    else
     {
         this->r = 0.5;
         this->g = 0.5;
         this->b = 0.5;
         this->color = "grey";
-    }
-    else
-    {
-        this->r = 0;
-        this->g = 0;
-        this->b = 0;
-        this->color = "black";
     }
 
     this->laps = 0;
@@ -194,9 +187,6 @@ void car::write_info(string text)
         cout << "\033[37m" << name << text << "\033[0m" << endl;
     else if (color == "white")
         cout << "\033[0m" << name << text << "\033[0m" << endl;
-
-    else if (color == "black")
-        cout << "\033[30m" << name << text << "\033[0m" << endl;
     else
         cout << color << name << text << "\033[0m" << endl;
 }
