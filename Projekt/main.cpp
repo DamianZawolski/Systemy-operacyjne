@@ -111,6 +111,7 @@ int main()
         if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
         {
             // track 2 cars threads are finished immediately, for rest we have to wait
+            all_intersections.set_all_unused();
             for (auto &car : cars_on_track_2.list_of_cars)
                 car.finished = true;
             for (auto &car : cars_on_track_1.list_of_cars)

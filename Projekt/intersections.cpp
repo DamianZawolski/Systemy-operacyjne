@@ -29,6 +29,10 @@ void intersections::set_all_unused()
     {
         i = true;
     }
+    for (auto &&i : this->cv_intersections)
+    {
+        i->notify_all();
+    }
 }
 
 void intersections::add_car_to_intersection(int intersection)
