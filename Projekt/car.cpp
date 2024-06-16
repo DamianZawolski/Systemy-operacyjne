@@ -9,6 +9,7 @@ using namespace std;
 #include <cstdlib> // Include this header for the rand() function
 #include <ctime>   // Include this header for the time() function
 
+std::mutex m;
 car::car(int track, string name, int id)
 {
     this->intersection = 0;
@@ -224,29 +225,33 @@ void car::move(intersections &all_intersections, all_cars &cars_on_track_1, all_
         {
             rotate_right();
         }
-        stopped = 0;
+        std::unique_lock<std::mutex> lock(m);
         if (x >= -0.3 and x <= -0.2 and y >= 0.05 and y <= 0.15 and all_intersections.return_intersection_state(0) > 0)
         {
-            stopped = 1;
+            all_intersections.get_cv_intersection(0)->wait(lock, [&all_intersections]
+                                                           { return all_intersections.get_intersection_ready(0); });
         }
         else if (x >= 0.2 and x <= 0.3 and y >= 0.35 and y <= 0.45 and all_intersections.return_intersection_state(1) > 0)
         {
-            stopped = 1;
+            all_intersections.get_cv_intersection(1)->wait(lock, [&all_intersections]
+                                                           { return all_intersections.get_intersection_ready(1); });
         }
         else if (x >= -0.3 and x <= -0.2 and y >= -0.45 and y <= -0.35 and all_intersections.return_intersection_state(2) > 0)
         {
-            stopped = 1;
+            all_intersections.get_cv_intersection(2)->wait(lock, [&all_intersections]
+                                                           { return all_intersections.get_intersection_ready(2); });
         }
         else if (x >= 0.2 and x <= 0.3 and y >= -0.15 and y <= -0.05 and all_intersections.return_intersection_state(3) > 0)
         {
-            stopped = 1;
+            all_intersections.get_cv_intersection(3)->wait(lock, [&all_intersections]
+                                                           { return all_intersections.get_intersection_ready(3); });
         }
 
         if (direction == "right")
         {
             x += 0.01;
         }
-        else if (direction == "down" and stopped == 0)
+        else if (direction == "down")
         {
             y -= 0.01;
         }
@@ -254,7 +259,7 @@ void car::move(intersections &all_intersections, all_cars &cars_on_track_1, all_
         {
             x -= 0.01;
         }
-        else if (direction == "up" and stopped == 0)
+        else if (direction == "up")
         {
             y += 0.01;
         }
